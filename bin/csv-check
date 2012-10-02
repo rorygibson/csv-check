@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require 'optparse'
+require 'ostruct'
+require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'csv-check.rb')
+
+module CsvCheckRunner
+
+    # command-line parsing
+    COMMAND = File.basename($0)
+    USAGE = "Usage: #{COMMAND} [INPUT] [OPTIONS]"
+
+    options = OpenStruct.new
+    options.output = "-"
+    options.separator = ","
+    options.pretty = false
+    options.headers = nil
+    options.skip_first_row = false
+
+    opts = OptionParser.new do |o|
+        o.banner = USAGE
+        o.separator ""
+        o.separator "Specific options:"
+
+        o.on("-k", "--skip-headers-from-file", "Ignore the headers (first line) in the file; use with --headers to set your own") do |headers|
+            options.skip_first_row = true
+        end
+
+        o.on("-s", "--separator SEP", "Set separator character surrounded by single quotes (default is ',')") do |sep|
+            options.separator = sep
+        end
+
+        o.on("-o", "--output FILE", "Write output to a file") do |fn|
+            options.output = fn
+        end
+     
+        o.on_tail("-h", "--help", "Show this message") do
+            puts o
+            exit
+        end
+
+        o.on_tail("-v", "--version", "Show version") do
+            puts CsvCheck::VERSION
+            exit
+        end
+    end
+
+    begin
+        opts.parse!(ARGV)
+    rescue
+        raise "Unable to parse options: #{$!}"
+    end
+
+    # initialize output handle
+    if options.output == "-"
+        OUT = $stdout.clone
+    else
+        OUT = File.open(options.output, "w")
+    end
+
+    if ARGV.size > 0
+        begin
+            IN = File.open(ARGV[0], "r")
+        rescue
+            print "Unable to open input file #{ARGV[0]}\n"
+            exit 1
+        end
+    else
+        IN = StringIO.new($stdin.read)
+    end
+    
+    # run the command
+    CsvCheck.check(IN, OUT, {}, {:col_sep => options.separator}, options.skip_first_row)
+    
+    # leave in peace
+    OUT.flush
+end
