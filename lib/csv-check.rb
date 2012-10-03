@@ -30,5 +30,39 @@ module CsvCheck
         print "\n"
 	end
 
+
+    def analyse_column row, index, type
+        raise 'Nil row' unless row
+        raise 'Empty row' unless row.size > 0
+        raise 'Nil index' unless index
+        raise 'Negative index' unless index >= 0
+
+        type.downcase!
+        cell = row[index]
+
+        case type
+        when 'integer'
+            true if is_integer?(cell)
+        else
+            raise 'Unrecognised column type'
+        end
+
+        return false
+    end
+
+    def is_integer?(str)
+      [                          # In descending order of likelihood:
+        /^[-+]?[1-9]([0-9]*)?$/, # decimal
+        /^0[0-7]+$/,             # octal
+        /^0x[0-9A-Fa-f]+$/,      # hexadecimal
+        /^0b[01]+$/              # binary
+      ].each do |match_pattern|
+        return true if str =~ match_pattern
+      end
+      return false
+    end
+
     module_function :check
+    module_function :analyse_column
+    module_function :is_integer?
 end
