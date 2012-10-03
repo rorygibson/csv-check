@@ -3,7 +3,8 @@
 require "rubygems"
 require 'optparse'
 require 'ostruct'
-require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'csv-check.rb')
+require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'csvchecker.rb')
+require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'typemapper.rb')
 
 module CsvCheckRunner
 
@@ -32,7 +33,7 @@ module CsvCheckRunner
         end
 
         o.on("-m", "--map \"<type map>\"", "Set separator character surrounded by single quotes (default is ',')") do |sep|
-            options.separator = sep
+            options.mappings = sep
         end
 
         o.on("-o", "--output FILE", "Write output to a file") do |fn|
@@ -73,9 +74,11 @@ module CsvCheckRunner
     else
         IN = StringIO.new($stdin.read)
     end
-    
+
+    typeMappings = new TypeMapper.to_map(options.mappings) if options.mappings
+
     # run the command
-    CsvCheck.check(IN, OUT, {}, {:col_sep => options.separator}, options.skip_first_row)
+    CsvChecker.check(IN, OUT, typeMappings, {:col_sep => options.separator}, options.skip_first_row)
     
     # leave in peace
     OUT.flush

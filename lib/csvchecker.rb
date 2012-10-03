@@ -1,7 +1,10 @@
 require 'rubygems'
 require 'fastercsv'
+require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'typechecker.rb')
 
-module CsvCheck
+module CsvChecker
+
+
 	def check input, output, mappings={}, csv_options={}, skip_first=false
 		if input.is_a? File
 			path = File.expand_path(input.path)
@@ -50,28 +53,14 @@ module CsvCheck
 
         case type
         when 'integer'
-            true if is_integer?(cell)
+            return TypeChecker.new.is_integer?(cell)
         else
             raise 'Unrecognised column type'
         end
-
-        return false
     end
 
-    def is_integer?(str)
-      [                          # In descending order of likelihood:
-        /^[-+]?[1-9]([0-9]*)?$/, # decimal
-        /^0[0-7]+$/,             # octal
-        /^0x[0-9A-Fa-f]+$/,      # hexadecimal
-        /^0b[01]+$/              # binary
-      ].each do |match_pattern|
-        return true if str =~ match_pattern
-      end
-      return false
-    end
 
     module_function :check
     module_function :analyse_column
-    module_function :is_integer?
     module_function :check_against_mapping
 end
