@@ -22,13 +22,21 @@ module CsvCheck
 
 			lines_scanned = lines_scanned + 1 
             
-            row.each_index { |i| 
-            }          
+            check_against_mapping(row, mappings)
         end
 
         print "Total number of lines checked: #{lines_scanned}\n"
         print "\n"
 	end
+
+
+    def check_against_mapping row, mappings
+        row.each_index { |i|
+            if mappings[i] then
+                print "Checking col #{i}\n"
+            end
+        }
+    end
 
 
     def analyse_column row, index, type
@@ -65,4 +73,5 @@ module CsvCheck
     module_function :check
     module_function :analyse_column
     module_function :is_integer?
+    module_function :check_against_mapping
 end

@@ -31,6 +31,10 @@ module CsvCheckRunner
             options.separator = sep
         end
 
+        o.on("-m", "--map \"<type map>\"", "Set separator character surrounded by single quotes (default is ',')") do |sep|
+            options.separator = sep
+        end
+
         o.on("-o", "--output FILE", "Write output to a file") do |fn|
             options.output = fn
         end
