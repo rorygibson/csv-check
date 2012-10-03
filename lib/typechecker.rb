@@ -2,13 +2,16 @@ class TypeChecker
 	
     def is_integer?(str)
       str = str.to_s
+      str.strip!
 
       match_pattern = /^[-+]?[0-9][0-9]*?$/
       return !str.match(match_pattern).nil?
     end
 
     def is_float?(str)
-      str = str.to_s
+      str = str
+      str.to_s.strip!
+      
       match_pattern = /^[-+]?[0-9]*\.[0-9]+?$/
       return !str.match(match_pattern).nil?
     end
