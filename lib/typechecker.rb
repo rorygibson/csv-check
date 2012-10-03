@@ -9,9 +9,9 @@ class TypeChecker
     end
 
     def is_float?(str)
-      str = str
-      str.to_s.strip!
-      
+      str = str.to_s
+      str.strip!
+
       match_pattern = /^[-+]?[0-9]*\.[0-9]+?$/
       return !str.match(match_pattern).nil?
     end
