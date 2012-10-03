@@ -22,4 +22,12 @@ describe CsvChecker, "#is_valid" do
     CsvChecker.is_valid(1, 'InTeGeR').should eq(true)
   end
 
+  it "should allow cells to have spaces at the end" do
+    CsvChecker.is_valid("1 ", 'integer').should eq(true)
+  end
+
+  it "should allow cells to have spaces at the start" do
+    CsvChecker.is_valid(" 1 ", 'integer').should eq(true)
+  end
+
 end
