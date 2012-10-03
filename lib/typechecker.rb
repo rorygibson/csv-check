@@ -15,4 +15,19 @@ class TypeChecker
       return false
     end
 
+    def is_empty_string?(thing)
+      false if thing.to_s == " "
+    end
+
+    def is_nil?(thing) 
+      false if thing.nil?
+    end
+
+    def is_string?(thing) 
+      return false if is_nil?(thing)
+      return false if is_empty_string?(thing)
+      return false if is_integer?(thing)
+      true if thing.is_a? String
+    end
+
 end
