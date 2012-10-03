@@ -24,8 +24,9 @@ module CsvChecker
             end
 
 			lines_scanned = lines_scanned + 1 
+            #print "line #{line_no}\n"
             
-            check_against_mapping(row, mappings)
+            check_against_mapping(row, mappings) unless row.empty?
         end
 
         print "Total number of lines checked: #{lines_scanned}\n"
@@ -34,22 +35,29 @@ module CsvChecker
 
 
     def check_against_mapping row, mappings
-        row.each_index { |i|
-            if mappings[i] then
-                print "Checking col #{i}\n"
+        return if mappings.nil? || row.nil?
+
+        i = 0
+        row.each { |item|
+            type = mappings[i.to_s]
+
+            if type then
+                print "Checking col #{i} against type #{type}\n"
+                raise "Error at col #{i}" unless analyse_column item, type
             end
-        }
+
+            i = i + 1
+        } 
     end
 
 
-    def analyse_column row, index, type
-        raise 'Nil row' unless row
-        raise 'Empty row' unless row.size > 0
-        raise 'Nil index' unless index
-        raise 'Negative index' unless index >= 0
+    def analyse_column cell, type
+        raise 'Nil cell' unless cell
+        raise 'Empty cell' unless cell.size > 0
+        raise 'Nil type' unless type
+        raise 'Empty type' unless type.size > 0
 
         type.downcase!
-        cell = row[index]
 
         case type
         when 'integer'

@@ -75,7 +75,11 @@ module CsvCheckRunner
         IN = StringIO.new($stdin.read)
     end
 
-    typeMappings = new TypeMapper.to_map(options.mappings) if options.mappings
+    if options.mappings then
+        typeMappings = TypeMapper.new.to_map(options.mappings)
+    else
+        typeMappingd = {}
+    end
 
     # run the command
     CsvChecker.check(IN, OUT, typeMappings, {:col_sep => options.separator}, options.skip_first_row)
