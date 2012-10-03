@@ -9,7 +9,7 @@ Feature: Skip first row
   	a,b,c,d
   	1,2,3,4 
   	"""
-    When I run `csv-check -k test.csv`
+    When I run `csv-check -k -m "0:integer" test.csv`
     Then the output should contain "Total number of lines checked: 1"
 
   Scenario: Don't skip first row  
@@ -18,5 +18,5 @@ Feature: Skip first row
   	a,b,c,d
   	1,2,3,4 
   	"""
-    When I run `csv-check test.csv`
+    When I run `csv-check -m "0:integer" test.csv`
     Then the output should contain "Total number of lines checked: 2"
