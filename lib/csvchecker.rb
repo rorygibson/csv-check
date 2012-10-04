@@ -72,15 +72,30 @@ module CsvChecker
             return TypeChecker.new.is_float?(cell)
         when 'string'
             return TypeChecker.new.is_string?(cell)
+        when 'date'
+            format = dateFormatFrom(type)
+            return TypeChecker.new.is_date?(cell, format)
         when 'any'
             return TypeChecker.new.is_any?(cell)
         else
-            raise 'Unrecognised column type'
+            raise "Unrecognised column type [#{type}]"
         end
     end
 
+    def dateFormatFrom type
+        return "%d/%m/%Y" if type.nil?
+
+        if type.include? "date('" then
+            type = type.delete("date('")
+            type = type.delete("')")
+            println "TYPE #{type}"
+        end
+
+        return type
+    end
 
     module_function :check
     module_function :is_valid
     module_function :check_row
+    module_function :dateFormatFrom
 end

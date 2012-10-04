@@ -16,6 +16,13 @@ class TypeChecker
       return !str.match(match_pattern).nil?
     end
 
+    def is_date?(data, format)
+      parsed = DateTime.parse(data)
+      output = parsed.strftime(format)
+
+      return output == data
+    end
+
     def is_space?(thing)
       return thing.to_s == " "
     end
