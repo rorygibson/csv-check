@@ -67,6 +67,8 @@ module CsvChecker
             return TypeChecker.new.is_integer?(cell)
         when 'float'
             return TypeChecker.new.is_float?(cell)
+        when 'string'
+            return TypeChecker.new.is_string?(cell)
         else
             raise 'Unrecognised column type'
         end
