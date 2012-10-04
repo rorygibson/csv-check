@@ -6,14 +6,6 @@ describe CsvChecker, "#is_valid" do
     expect { CsvChecker.is_valid(1, 'SOMETHING_ELSE')}.to raise_error
   end
 
-  it "should raise an error for a nil cell" do
-    expect { CsvChecker.is_valid(nil, 'integer')}.to raise_error
-  end
-
-  it "should raise an error for an empty row" do
-    expect { CsvChecker.is_valid("", 'integer')}.to raise_error
-  end
-
   it "should pass when an integer is found" do
     CsvChecker.is_valid(1, 'integer').should eq(true)
   end

@@ -16,7 +16,7 @@ class TypeChecker
       return !str.match(match_pattern).nil?
     end
 
-    def is_empty_string?(thing)
+    def is_space?(thing)
       return thing.to_s == " "
     end
 
@@ -28,7 +28,15 @@ class TypeChecker
       return false if is_nil?(thing)      
       return false if is_integer?(thing) 
       return false if is_float?(thing)
-      return true if is_empty_string?(thing)
+      return true if is_space?(thing)
+      true if thing.is_a? String
+    end
+
+    def is_any?(thing) 
+      return false if is_nil?(thing)      
+      return true if is_integer?(thing) 
+      return true if is_float?(thing)
+      return true if is_space?(thing)
       true if thing.is_a? String
     end
 

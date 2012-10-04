@@ -9,6 +9,7 @@ module CsvChecker
 		lines_scanned = 0
         num_errors = 0
 
+        i = 0
         FasterCSV.new(input, csv_options).each do |row|
             if skip_first then
             	line_no = line_no + 1
@@ -18,7 +19,8 @@ module CsvChecker
 
 			lines_scanned = lines_scanned + 1 
             
-            num_errors = num_errors + check_row(row, mappings) unless row.empty?
+            num_errors = num_errors + check_row(i, row, mappings) unless row.empty?
+            i = i + 1
         end
 
         print "Total number of lines checked: #{lines_scanned}\n"
@@ -33,7 +35,7 @@ module CsvChecker
 	end
 
 
-    def check_row row, mappings
+    def check_row row_num, row, mappings
         raise "Nil mappings" if mappings.nil? 
         raise "Nil row" if row.nil?
 
@@ -44,7 +46,10 @@ module CsvChecker
 
             if type then
                 valid = is_valid item, type
-                errors = errors + 1 unless valid
+                if !valid then
+                    print "Error at row #{row_num} column #{i}\n"
+                    errors = errors + 1 
+                end
             end
 
             i = i + 1
@@ -55,8 +60,6 @@ module CsvChecker
 
 
     def is_valid cell, type
-        raise 'Nil cell' unless cell
-        raise 'Empty cell' unless cell.size > 0
         raise 'Nil type' unless type
         raise 'Empty type' unless type.size > 0
 
@@ -69,6 +72,8 @@ module CsvChecker
             return TypeChecker.new.is_float?(cell)
         when 'string'
             return TypeChecker.new.is_string?(cell)
+        when 'any'
+            return TypeChecker.new.is_any?(cell)
         else
             raise 'Unrecognised column type'
         end

@@ -10,6 +10,10 @@ describe TypeChecker, "#is_string" do
     TypeChecker.new.is_string?("1").should eq(false)
   end
 
+  it "should be true for a string with an integer in it" do
+    TypeChecker.new.is_string?("abc1def").should eq(true)
+  end
+
   it "should be true for a space" do
     TypeChecker.new.is_string?(" ").should eq(true)
   end
