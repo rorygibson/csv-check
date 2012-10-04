@@ -21,6 +21,26 @@ Feature: Checking that a column can contain only integer values
     Then the output should contain "Found 1 errors"   
     And the exit status should be 1
 
+  Scenario: Quoted integers are allowed
+    Given a file named "test.csv" with:
+    """
+    a,b,c,d
+    "1000","2000","1000","4000"
+    """
+    When I run `csv-check -k --map "2:integer" test.csv`
+    Then the output should contain "Found 0 errors"   
+    And the exit status should be 0
+
+  Scenario: Comma-separated numbers aren't allowed
+    Given a file named "test.csv" with:
+    """
+    a,b,c,d
+    "1000","2000","1,000","4000"
+    """
+    When I run `csv-check -k --map "2:integer" test.csv`
+    Then the output should contain "Found 1 errors"   
+    And the exit status should be 1
+
   Scenario: Check for presence of integer in a column - multiple rows and mapping elements
     Given a file named "test.csv" with:
     """
