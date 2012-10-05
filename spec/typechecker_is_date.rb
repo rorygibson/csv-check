@@ -6,7 +6,7 @@ describe TypeChecker, "#is_date" do
     TypeChecker.new.is_date?("01/01/2012", "%d/%m/%Y").should eq(true)
   end
 
-  it "should not let you supply a date that isn't in the default forma, without specifying an alternative" do
+  it "should work with custom formats" do
     TypeChecker.new.is_date?("01-01-2012", "%d/%m/%Y").should eq(false)
   end
 

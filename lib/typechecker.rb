@@ -19,8 +19,9 @@ class TypeChecker
     def is_date?(data, format)
       parsed = DateTime.parse(data)
       output = parsed.strftime(format)
+      matches = (output == data)
 
-      return output == data
+      return matches
     end
 
     def is_space?(thing)

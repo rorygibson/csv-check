@@ -4,6 +4,8 @@ require  File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'typec
 
 module CsvChecker
 
+    DEFAULT_DATE_FORMAT = "%d/%m/%Y"
+
 	def check input, output, mappings={}, csv_options={}, skip_first=false
 		line_no = 1
 		lines_scanned = 0
@@ -64,34 +66,41 @@ module CsvChecker
         raise 'Empty type' unless type.size > 0
 
         type.downcase!
+        type_selector = type
 
-        case type
+        type_selector = "date" if type_selector.match /^date/ 
+
+        case type_selector
         when 'integer'
             return TypeChecker.new.is_integer?(cell)
+
         when 'float'
             return TypeChecker.new.is_float?(cell)
+
         when 'string'
             return TypeChecker.new.is_string?(cell)
+
         when 'date'
             format = dateFormatFrom(type)
             return TypeChecker.new.is_date?(cell, format)
+
         when 'any'
             return TypeChecker.new.is_any?(cell)
+
         else
             raise "Unrecognised column type [#{type}]"
         end
     end
 
-    def dateFormatFrom type
-        return "%d/%m/%Y" if type.nil?
+    def dateFormatFrom str
+        return DEFAULT_DATE_FORMAT if str == "date" 
 
-        if type.include? "date('" then
-            type = type.delete("date('")
-            type = type.delete("')")
-            println "TYPE #{type}"
+        if str.match /^date.*/ then
+            type = str[ /'(.*)'/ , 1 ]
+            return type
         end
 
-        return type
+        return DEFAULT_DATE_FORMAT
     end
 
     module_function :check
