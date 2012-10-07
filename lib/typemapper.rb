@@ -6,7 +6,7 @@ class TypeMapper
 
 		map = Hash.new
 		str.split(",").each {|pair|
-			split_pair = pair.split(":")
+			split_pair = pair.split(":", 2)
 			k = split_pair[0]
 			v = split_pair[1]
 			map[k] = v

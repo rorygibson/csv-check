@@ -17,7 +17,9 @@ class TypeChecker
     end
 
     def is_date?(data, format)
+      puts "Date was #{data}, format [#{format}]\n"
       parsed = DateTime.parse(data)
+      puts "Parsed to [#{parsed}]"
       output = parsed.strftime(format)
       matches = (output == data)
 

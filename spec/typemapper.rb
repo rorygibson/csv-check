@@ -14,4 +14,8 @@ describe TypeMapper, "#to_map" do
     expect { TypeMapper.new.to_map("") }.to raise_error
   end
 
+  it "should allow type names with colons in (for date format)" do
+  	TypeMapper.new.to_map("0:integer,1:date('%d/%m/%Y %H:%M')").should == { "0"=>"integer", "1"=>"date('%d/%m/%Y %H:%M')" }	
+  end
+
 end

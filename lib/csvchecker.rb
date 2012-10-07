@@ -47,6 +47,7 @@ module CsvChecker
             type = mappings[i.to_s]
 
             if type then
+                puts "Checking [#{item}] against [#{type}]\n"
                 valid = is_valid item, type
                 if !valid then
                     print "Error at row #{row_num} column #{i}\n"
@@ -65,10 +66,8 @@ module CsvChecker
         raise 'Nil type' unless type
         raise 'Empty type' unless type.size > 0
 
-        type.downcase!
-        type_selector = type
-
-        type_selector = "date" if type_selector.match /^date/ 
+        type_selector = type.downcase!
+        type_selector = "date" if type.match /^date/ 
 
         case type_selector
         when 'integer'
@@ -94,6 +93,8 @@ module CsvChecker
 
     def dateFormatFrom str
         return DEFAULT_DATE_FORMAT if str == "date" 
+
+        puts "[#{str}]\n"
 
         if str.match /^date.*/ then
             type = str[ /'(.*)'/ , 1 ]

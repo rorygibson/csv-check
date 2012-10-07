@@ -20,7 +20,7 @@ Feature: Checking that a column can contain only date values
     """
     When I run `csv-check -k --map "0:date('%d/%m/%Y %H:%M')" test.csv`
     Then the output should contain "Found 0 errors"
-    And the exit status should be 0    
+    And the exit status should be 0   
 
 
   Scenario: Specifying date format - failure
@@ -30,8 +30,8 @@ Feature: Checking that a column can contain only date values
     01/01/1980 12:50,2,3,4
     """
     When I run `csv-check -k --map "0:date('%d/%m/%Y')" test.csv`
-    Then the output should contain "Found 0 errors"
-    And the exit status should be 0    
+    Then the output should contain "Found 1 errors"
+    And the exit status should be 1    
 
 
   Scenario: Check for presence of date in a column - failure - one row
