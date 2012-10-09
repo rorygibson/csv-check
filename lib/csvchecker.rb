@@ -66,7 +66,7 @@ module CsvChecker
         raise 'Nil type' unless type
         raise 'Empty type' unless type.size > 0
 
-        type_selector = type.downcase!
+        type_selector = type.downcase
         type_selector = "date" if type.match /^date/ 
 
         case type_selector
@@ -87,7 +87,7 @@ module CsvChecker
             return TypeChecker.new.is_any?(cell)
 
         else
-            raise "Unrecognised column type [#{type}]"
+            raise "Unrecognised column type [#{type_selector}]"
         end
     end
 

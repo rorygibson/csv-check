@@ -17,10 +17,12 @@ class TypeChecker
     end
 
     def is_date?(data, format)
-      puts "Date was #{data}, format [#{format}]\n"
-      parsed = DateTime.parse(data)
-      puts "Parsed to [#{parsed}]"
-      output = parsed.strftime(format)
+      parsed = nil
+      begin
+        parsed = DateTime.parse(data)
+      rescue
+      end
+      output = parsed.strftime(format) if parsed
       matches = (output == data)
 
       return matches
