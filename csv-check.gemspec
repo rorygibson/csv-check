@@ -7,10 +7,10 @@ Gem::Specification.new do |gem|
   gem.name          = "csv-check"
   gem.version       = CsvCheck::VERSION
   gem.authors       = ["rory"]
-  gem.email         = ["rgibson@technophobia.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.email         = ["rory@deadcrow.net"]
+  gem.description   = %q{Lets you verify that cells in a CSV files match formats you expect}
+  gem.summary       = %q{Allows you to specify formats (integer, float, string, date (with checking aginst date format strings) for columns in CSV data, both std in and files)}
+  gem.homepage      = "http://github.com/rorygibson/csv-check"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
